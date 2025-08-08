@@ -37,7 +37,7 @@ socket.on("receive-location",(data)=>{
     if(markers[id]){
         markers[id].setLatLng([latitude,longitude]);
     }else{
-        markers[id] = L.marker([latitude,longitude]).addTo(map).bindTooltip(nam, { permanent: true, direction: "auto" }).openTooltip();
+        markers[id] = L.marker([latitude,longitude]).addTo(map).bindTooltip(nam, { permanent: true, direction: "top" }).openTooltip();
     }
 });
 
