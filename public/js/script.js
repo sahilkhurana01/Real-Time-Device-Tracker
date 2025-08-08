@@ -1,10 +1,11 @@
 const socket = io();
+const nam = prompt("Enter your name");
 
 if(navigator.geolocation){
     navigator.geolocation.watchPosition(
         (position)=>{
         const{latitude, longitude} = position.coords;
-        socket.emit("send-location",{latitude, longitude});
+        socket.emit("send-location",{nam ,latitude, longitude});
         },
         (error)=>{
             console.error(error);
@@ -17,12 +18,13 @@ if(navigator.geolocation){
     );
 }
 
-const map = L.map("map").setView([30.900965, 75.857277], 10);
+const map = L.map("map").setView([30.900965, 75.857277], 15);
 
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
     attribution:"Sahil Khurana"
 }).addTo(map)
 
+console.log(nam);
 
 const markers = {};
 
@@ -32,7 +34,7 @@ socket.on("receive-location",(data)=>{
     if(markers[id]){
         markers[id].setLatLng([latitude,longitude]);
     }else{
-        markers[id] = L.marker([latitude,longitude]).addTo(map);
+        markers[id] = L.marker([latitude,longitude]).addTo(map).bindTooltip(nam, { permanent: true, direction: "auto" }).openTooltip();
     }
 });
 
